@@ -1,0 +1,4 @@
+.customnav ul > li > div,
+.customnav > div > .navbar-brand {
+  cursor: pointer;
+}

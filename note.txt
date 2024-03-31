@@ -1,0 +1,89 @@
+ <NewsCard
+              author={item.author}
+              content={item.content}
+              title={item.title}
+              description={item.description}
+              img={item.urlToImage}
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            import React from "react";
+import NewsCard from "./NewsCard";
+import NewsApi from "./NewsApi";
+
+function NewsBoard({ category, keyword }) {
+  // console.log(category);
+  const { data, error } = NewsApi({ category });
+  // console.log(data);
+  let showdata;
+
+  function showfunction(data) {
+    console.log(data);
+    return data.map((item, index) => {
+      return (
+        <NewsCard
+          key={index}
+          author={item.author}
+          content={item.content}
+          title={item.title}
+          description={item.description}
+          img={item.urlToImage}
+          url={item.url}
+        />
+      );
+    });
+  }
+
+  if (data) {
+    if (keyword) {
+      // filter by keyword
+      const filteredData = data.articles.filter((item) => {
+        return item.title.includes(keyword);
+      });
+
+      showdata = showfunction(filteredData);
+    } else {
+      showdata = showfunction(data.articles);
+    }
+
+    return (
+      <div className="container-fluid">
+        <div className="row mt-2">
+          <p className="col-8 text-center  mx-auto fs-5 h-auto fw-bold">
+            Latest
+            <span className=" bg-danger text-white py-2 px-1 rounded-3 ms-1 d-inline-block">
+              News
+            </span>
+          </p>
+        </div>
+
+        <div className="row">{showdata}</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>cannot fetch data</div>;
+  }
+}
+
+export default NewsBoard;
